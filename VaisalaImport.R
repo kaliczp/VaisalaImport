@@ -13,8 +13,12 @@ VaisalaImport <- function(filename, column = 25){
     tempHeadEndOK <- rawData[tempHeadEnd + 1] == as.raw("0xff")
     HeadEnd <- tempHeadEnd[tempHeadEndOK]
     if(length(HeadEnd) > 1){
-        warning("HeadEnd longer than one! First is used.")
-        HeadEnd <- HeadEnd[1]
+        tempHeadEndOK <- rawData[HeadEnd + 2] == as.raw("0xff")
+        HeadEnd <- HeadEnd[tempHeadEndOK]
+        if(length(HeadEnd) > 1){
+            warning("HeadEnd longer than one! First is used.")
+            HeadEnd <- HeadEnd[1]
+        }
     }
     ## Header strings
     tempStartOK <- rawData[tempStart + 1] == "00" & rawData[tempStart + 2] == "00"
