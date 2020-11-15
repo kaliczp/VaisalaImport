@@ -1,0 +1,4 @@
+#+TITLE: Import Vaisala binary dat from meteorological station with R
+
+It is my effort to import Vaisala binary dat file into R. I have no
+linux program to make this conversion.
