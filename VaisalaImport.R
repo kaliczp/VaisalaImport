@@ -1,4 +1,4 @@
-VaisalaImport <- function(filename){
+VaisalaImport <- function(filename, column = 25){
     ## Determination of size in bytes
     size <- file.info(filename)$size
     stopifnot(size > 0) ## check case of empty file
@@ -18,7 +18,7 @@ VaisalaImport <- function(filename){
     ## Data record identifier
     Record.Number <- as.numeric(rawData[Start+2])
     ## Where are precipitation codes?
-    nr.precipit <- which(Record.Number == 25)
+    nr.precipit <- which(Record.Number == column)
 ### Create precipitation vector
     ## Empty vector
     prec.vec <- numeric(144)
