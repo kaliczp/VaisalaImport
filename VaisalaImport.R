@@ -19,14 +19,15 @@ VaisalaImport <- function(filename){
     Record.Number <- as.numeric(rawData[Start+2])
     ## Where are precipitation codes?
     nr.precipit <- which(Record.Number == 25)
-### Create precipitation matrix
-    ## Empty matrix
-    prec.mat <- matrix(raw(), nrow = 144, ncol = 4)
-    ## Fill prec.mat row-by-row
+### Create precipitation vector
+    ## Empty vector
+    prec.vec <- numeric(144)
+    ## Fill prec.vec
     for(prec.point in 1:length(nr.precipit)){
         prec.start <- Start[nr.precipit[prec.point]] + 3
         prec.end <- Start[nr.precipit[prec.point]+1] -1
-        prec.mat[prec.point,] <- rawData[prec.start:prec.end]
+        prec.raw <- rawData[prec.start:prec.end]
+        prec.vec[prec.point] <- readBin(prec.raw, "double", size = 4,  endian="big")
     }
-    prec.mat
+    prec.vec
 }
