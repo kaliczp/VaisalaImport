@@ -1,4 +1,5 @@
 VaisalaImport <- function(filename, column = 25, period = 10){
+    require(xts)
     ## Determination of size in bytes
     size <- file.info(filename)$size
     stopifnot(size > 0) ## check case of empty file
@@ -69,5 +70,5 @@ VaisalaImport <- function(filename, column = 25, period = 10){
     TimeStamp <- seq(from = StartTime, by = paste(period, "mins"),
                      length.out = length(prec.vec))
     ## Resulted data
-    data.frame(Time = TimeStamp, Prec = prec.vec)
+    xts(x = prec.vec, order.by = TimeStamp)
 }
