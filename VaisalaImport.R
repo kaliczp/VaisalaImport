@@ -1,4 +1,4 @@
-VaisalaImport <- function(filename, column = 25){
+VaisalaImport <- function(filename, column = 25, period = 10){
     ## Determination of size in bytes
     size <- file.info(filename)$size
     stopifnot(size > 0) ## check case of empty file
@@ -60,5 +60,14 @@ VaisalaImport <- function(filename, column = 25){
         prec.raw <- rawData[prec.start:prec.end]
         prec.vec[prec.point] <- readBin(prec.raw, "double", size = 4,  endian="big")
     }
-    prec.vec
+### Timestamp determination
+    ## Seconds since 1970-01-01 00:00:00
+    Since1970 <- readBin(rawData[(HeadEnd+107):(Start[1]-20)],
+                         "integer", size=4, endian = "big")
+    ## Timestamp creation for prec.vec
+    StartTime <- as.POSIXct(Since1970, origin = '1970-01-01')
+    TimeStamp <- seq(from = StartTime, by = paste(period, "mins"),
+                     length.out = length(prec.vec))
+    ## Resulted data
+    data.frame(Time = TimeStamp, Prec = prec.vec)
 }
