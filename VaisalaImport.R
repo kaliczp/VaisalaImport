@@ -13,12 +13,21 @@ VaisalaImport <- function(filename, column = 25, period = 10){
     tempHeadEnd <- which(rawData == as.raw("0xfe"))
     tempHeadEndOK <- rawData[tempHeadEnd + 1] == as.raw("0xff")
     HeadEnd <- tempHeadEnd[tempHeadEndOK]
+    ## If not unique further characters tested
     if(length(HeadEnd) > 1){
         tempHeadEndOK <- rawData[HeadEnd + 2] == as.raw("0xff")
         HeadEnd <- HeadEnd[tempHeadEndOK]
         if(length(HeadEnd) > 1){
-            warning("HeadEnd longer than one! First is used.")
-            HeadEnd <- HeadEnd[1]
+            tempHeadEndOK <- rawData[HeadEnd + 3] == as.raw("0xff")
+            HeadEnd <- HeadEnd[tempHeadEndOK]
+            if(length(HeadEnd) > 1){
+                tempHeadEndOK <- rawData[HeadEnd + 4] == as.raw("0xff")
+                HeadEnd <- HeadEnd[tempHeadEndOK]
+                if(length(HeadEnd) > 1){
+                    warning("HeadEnd longer than one! First is used.")
+                    HeadEnd <- HeadEnd[1]
+                }
+            }
         }
     }
     ## Header strings
